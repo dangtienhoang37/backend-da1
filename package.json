@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js",
+    "debug": "node inspect server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "chalk": "^5.2.0",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.3.4",
+    "nodemon": "^2.0.22",
+    "sequelize": "^6.32.0"
+  },
+  "devDependencies": {
+    "express-validator": "^7.0.1"
+  }
+}
