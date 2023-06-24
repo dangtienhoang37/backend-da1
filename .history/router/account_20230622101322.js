@@ -29,10 +29,9 @@ userController.register);
 
 
 // Route đăng xuất
-router.post("/logout", (req, res) => {
-  // Xử lý logic đăng xuất ở đây
-  // Xóa token hoặc phiên làm việc
+router.get("/logout", (req, res) => {
 
+    res.clearCookie('refreshToken');
     res.send("Đăng xuất thành công");
 });
 
