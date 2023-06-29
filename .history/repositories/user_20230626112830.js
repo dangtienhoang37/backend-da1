@@ -7,7 +7,6 @@ import Exception from '../error/Exception.js'
 import bcrypt from 'bcrypt'
 import { uniqueId } from '../helper/UniqueId.js'
 import {auth} from '../controller/index.js'
-import { Op } from 'sequelize'
 
 // const findone = async()
 
@@ -83,6 +82,7 @@ const register = async ({
     return newUser
 
 }
+
 const getDetailUser = async (userId) => {
     const user = await UserModel.findOne({ where: { IDU: userId }, raw: true })
     if (!user) {
