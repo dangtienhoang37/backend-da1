@@ -1,0 +1,12 @@
+PORT = 3002
+HOSTDB = "frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com"
+USERDB = "ibj8zxnqiw035hkj"
+PASSWORDDB = "zne10totfttebswj"
+DBNAME = "fvoo4f7v7wt2h5lg"
+DBPORT = "3306"
+
+
+SALT_ROUNDS = "I have a dream" #them secret cho encrypt
+
+JWT_SECRET = "this is secret JWT"
+JWT_REFRESH = "you have not permission"
