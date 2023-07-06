@@ -34,6 +34,10 @@ const Ck = sequelize.define('Ck', {
                 msg:  'Email is incorrect format',
             },
         },
+    },
+    img: {
+        type: DataTypes.STRING,
+        
     }
 },
 {
