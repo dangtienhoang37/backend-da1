@@ -1,44 +1,51 @@
 import Exception from '../error/Exception.js'
 import { uniqueId } from '../helper/UniqueId.js'
-import {CkModel, LbsModel, PdlModel,UserModel} from '../model/index.js'
+import { CkModel, LbsModel, PdlModel, UserModel } from '../model/index.js'
 import moment from 'moment-timezone'
 import { userRepo } from './index.js'
 import generatePassword from '../helper/genPass.js'
 import Ck from '../model/Ck.js'
 
-const  getAllSchedule =  async(doctorID) => {
+const getAllSchedule = async (doctorID) => {
     try {
-        const schedule = await LbsModel.findAll({ where: {
-            IDUBS: doctorID
-        }})
+        const schedule = await LbsModel.findAll({
+            where: {
+                IDUBS: doctorID
+            }
+        })
         return schedule
-    } catch(exception){
+    } catch (exception) {
         throw exception
     }
 }
 
-const getDetailSchedule = async(doctorID,IDL,IDP) => {
+const getDetailSchedule = async (doctorID, IDL, IDP) => {
     try {
-        const detailSchedule = await LbsModel.findOne({ where: {
-            IDUBS: doctorID, 
-            IDL: IDL
-        }})
+        const detailSchedule = await LbsModel.findOne({
+            where: {
+                IDUBS: doctorID,
+                IDL: IDL
+            }
+        })
         if (detailSchedule) {
-            const detailorder = await PdlModel.findAll({ where: {
-                IDP: IDP
-            }})
+            const detailorder = await PdlModel.findAll({
+                where: {
+                    IDP: IDP
+                }
+            })
             const result = {
                 detailSchedule: detailSchedule,
-                detailorder: detailorder }
-                return result
+                detailorder: detailorder
+            }
+            return result
         }
-        else{
+        else {
             throw new Exception("schedule not found")
-            
+
         }
-        
-        
-    }catch(exception){
+
+
+    } catch (exception) {
         throw exception
     }
 }
@@ -62,11 +69,11 @@ const doctorCreateAppointment = async ({
             date: date,
         }, raw: true
     })
-    if(appointment.count >= 5) {
+    if (appointment.count >= 5) {
         throw new Exception("lich kham trong gio nay da day")
     }
 
-    let existingUser = await UserModel.findOne({ where: {username: username}, raw: true })
+    let existingUser = await UserModel.findOne({ where: { username: username }, raw: true })
     if (!existingUser) {
         const password = generatePassword()
         let newRegister = await userRepo.register({
@@ -77,14 +84,15 @@ const doctorCreateAppointment = async ({
             BHYT,
             address,
             username,
-            password})
-            
+            password
+        })
+
         // throw new Exception(Exception.USER_EXIST)
-        let existingUser = await UserModel.findOne({ where: {username: username}, raw: true })
+        let existingUser = await UserModel.findOne({ where: { username: username }, raw: true })
 
         const newIDP = uniqueId()
 
-        let docProfile = await UserModel.findOne({ where: {IDU: idDoctor}, raw: true })
+        let docProfile = await UserModel.findOne({ where: { IDU: idDoctor }, raw: true })
         let room = docProfile.work_room
 
         const newSchedule = await PdlModel.create({
@@ -108,22 +116,23 @@ const doctorCreateAppointment = async ({
             time: time,
             address: room,
             IDUBS: idDoctor,
-            IDP:newIDP 
+            IDP: newIDP
         })
-        return {newRegister,
-            password:password,
+        return {
+            newRegister,
+            password: password,
             newSchedule,
             doctorSchedule
-        } 
-    
-        
-        
-        
+        }
+
+
+
+
     }
-    else{
+    else {
         const newIDP = uniqueId()
         const newSchedule = await PdlModel.create({
-            IDP: newIDP ,
+            IDP: newIDP,
             bookingAt: moment(appointment.bookingAt).tz('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss'),
             time: time,
             date: date,
@@ -137,7 +146,7 @@ const doctorCreateAppointment = async ({
             IDUBN: existingUser.IDU,
             email: existingUser.username
         })
-        let docProfile = await UserModel.findOne({ where: {IDU: idDoctor}, raw: true })
+        let docProfile = await UserModel.findOne({ where: { IDU: idDoctor }, raw: true })
         let room = docProfile.work_room
         const doctorSchedule = await LbsModel.create({
             IDL: uniqueId(),
@@ -145,30 +154,34 @@ const doctorCreateAppointment = async ({
             time: time,
             address: room,
             IDUBS: idDoctor,
-            IDP: newIDP 
+            IDP: newIDP
         })
         return {
             newSchedule,
-        doctorSchedule} 
+            doctorSchedule
+        }
     }
 
 }
 const getDetailDoctor = async (doctorID) => {
-    const doctor = await UserModel.findOne({where:{
-        IDU: doctorID,
-        role: 3
-    },raw: true})
-    if(!doctor){
+    const doctor = await UserModel.findOne({
+        where: {
+            IDU: doctorID,
+            role: 3
+        }, raw: true
+    })
+    if (!doctor) {
         throw new Exception('cant not find doctor')
     }
     return doctor
 }
 const getDetailSpecialist = async (specialistID) => {
-    const specialist = await CkModel.findOne({where:{
-        IDCK: specialistID
-    },raw: true
-    }) 
-    if(!specialist){
+    const specialist = await CkModel.findOne({
+        where: {
+            IDCK: specialistID
+        }, raw: true
+    })
+    if (!specialist) {
         throw new Exception('cant not find specialist')
     }
     return specialist
@@ -176,17 +189,17 @@ const getDetailSpecialist = async (specialistID) => {
 
 const getAllDoctor = async () => {
     try {
-        const doctor = await UserModel.findAll({raw: true})
+        const doctor = await UserModel.findAll({ where: { role: 3 }, raw: true })
         return doctor
-    } catch (exception){
+    } catch (exception) {
         throw exception
     }
 }
-const getAllSpecialist = async() => {
+const getAllSpecialist = async () => {
     try {
-        const specialist = await CkModel.findAll({raw: true})
+        const specialist = await CkModel.findAll({ raw: true })
         return specialist
-    } catch (exception){
+    } catch (exception) {
         throw exception
     }
 }
