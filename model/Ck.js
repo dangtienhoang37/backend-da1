@@ -1,9 +1,9 @@
 import { DataTypes, Sequelize } from "sequelize";
-import isEmail, {body, validationResult} from "express-validator";
-const sequelize = new Sequelize('doan1','root','123456',{
+import isEmail, { body, validationResult } from "express-validator";
+const sequelize = new Sequelize('doan1', 'root', '123456', {
     host: '127.0.0.1',
     dialect: 'mysql',
-    
+
     timezone: 'Asia/Bangkok',
 })
 
@@ -31,22 +31,22 @@ const Ck = sequelize.define('Ck', {
         validate: {
             isEmail: {
                 args: true,
-                msg:  'Email is incorrect format',
+                msg: 'Email is incorrect format',
             },
         },
     },
     img: {
         type: DataTypes.STRING,
-        
+
     }
 },
-{
-    tableName: 'ck',
-    timestamps: false
-})
+    {
+        tableName: 'ck',
+        timestamps: false
+    })
 Ck.associations = (models) => {
-    User.hasMany(models.User,{ foreignKey: 'IDCK'})
-    
+    User.hasMany(models.User, { foreignKey: 'IDCK' })
+
 }
 
 

@@ -10,3 +10,11 @@ SALT_ROUNDS = "I have a dream" #them secret cho encrypt
 
 JWT_SECRET = "this is secret JWT"
 JWT_REFRESH = "you have not permission"
+
+
+PORT = 3002
+HOSTDB = "127.0.0.1"
+USERDB = "root"
+PASSWORDDB = "123456"
+DBNAME = "doan1"
+DBPORT = "3306"

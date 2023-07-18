@@ -190,7 +190,14 @@ const getDetailSpecialist = async (specialistID) => {
 const getAllDoctor = async () => {
     try {
         const doctor = await UserModel.findAll({ where: { role: 3 }, raw: true })
-        return doctor
+        let result = {}
+        for (let key in doctor) {
+            if (doctor.hasOwnProperty(key)) {
+                let specialist = await CkModel.findOne({ where: { IDCK: doctor[key].IDCK }, raw: true })
+                result[key] = { ...doctor[key], specialist: specialist }
+            }
+        }
+        return result
     } catch (exception) {
         throw exception
     }
